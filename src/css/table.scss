@@ -1,0 +1,40 @@
+.milestones table {
+  thead tr th {
+    border-bottom: 2px solid #444;
+  }
+  tbody {
+    tr {
+      counter-increment: milestonesubnumber;
+
+      &.newMilestone {
+        counter-increment: milestonenumber;
+        counter-reset: milestonesubnumber;
+
+        th, td {
+          border-top: 2px solid #444;
+        }
+
+        th.milestone:before {
+          counter-increment: milestonesubnumber;
+          content: counter(milestonenumber) '. ';
+          display: inline;
+        }
+      }
+
+      th.milestone:before {
+        display: none;
+      }
+      td.task:before {
+        content: counter(milestonenumber) '.' counter(milestonesubnumber) ' ';
+      }
+    }
+
+    .owner img {
+      border-radius: 100px;
+    }
+
+    a {
+      color: inherit;
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "milestones",
+  "version": "1.0.0",
+  "authors": [
+    "Gregor Martynus <gregor@martynus.net>"
+  ],
+  "description": "A Google SpreadSheet/Script & GitHub backed Milestone thingy",
+  "keywords": [
+    "bootstrap",
+    "app",
+    "hoodie",
+    "milestone"
+  ],
+  "private": true,
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "src"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.1.0",
+    "underscore": "^1.6.0",
+    "initials": "^0.2.11"
+  }
+}

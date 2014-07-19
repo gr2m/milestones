@@ -1,0 +1,40 @@
+{
+  "name": "milestones",
+  "version": "1.0.0",
+  "description": "A Google SpreadSheet/Script & GitHub backed Milestone thingy",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gr2m/milestones.git"
+  },
+  "keywords": [
+    "bootstrap",
+    "app",
+    "hoodie",
+    "milestone"
+  ],
+  "author": "Gregor Martynus <gregor@martynus.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gr2m/milestones/issues"
+  },
+  "homepage": "https://github.com/gr2m/milestones",
+  "devDependencies": {
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-sass": "~0.7.2",
+    "matchdep": "~0.3.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-bump": "0.0.13",
+    "grunt-gh-pages": "~0.9.1",
+    "grunt-contrib-livereload": "~0.1.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-cssmin": "~0.8.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-connect": "~0.6.0"
+  }
+}
