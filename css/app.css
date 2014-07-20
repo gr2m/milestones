@@ -78,6 +78,9 @@ body > p.info a {
   margin: 2px -4px;
 }
 
+.milestones table {
+  cursor: default;
+}
 .milestones table thead tr th {
   border-bottom: 2px solid #444;
 }
