@@ -1,7 +1,7 @@
 {
   "name": "milestones",
   "version": "1.0.0",
-  "description": "A Google SpreadSheet/Script & GitHub backed Milestone thingy",
+  "description": "A Google GitHub Api backed Milestone thingy",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

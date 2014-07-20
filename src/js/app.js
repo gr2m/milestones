@@ -3,6 +3,9 @@
 (function ($, initials, _, githubApi) {
   'use strict';
 
+  var repoUrl = 'https://github.com/gr2m/milestones';
+  var repoUsername = repoUrl.match(/github.com\/([^\/]+)/).pop();
+  var repoName = repoUrl.match(/github.com\/[^\/]+\/([^\/]+)/).pop();
   var rowTemplate = '';
   rowTemplate += '<tr class="<%= isNewMilestone ? "newMilestone" : "" %>">\n';
   rowTemplate += '    <% if (isNewMilestone) { %>\n';
@@ -56,7 +59,7 @@
     } catch(e) {}
   };
 
-  cache('issues', githubApi.user('gr2m').repo('milestones').issues.findAll)
+  cache('issues', githubApi.user(repoUsername).repo(repoName).issues.findAll)
   .progress(handleResponse)
   .done(handleResponse)
   .fail(handleError);

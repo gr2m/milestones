@@ -4,7 +4,7 @@
   "authors": [
     "Gregor Martynus <gregor@martynus.net>"
   ],
-  "description": "A Google SpreadSheet/Script & GitHub backed Milestone thingy",
+  "description": "A Google GitHub Api backed Milestone thingy",
   "keywords": [
     "bootstrap",
     "app",
