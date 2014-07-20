@@ -130,6 +130,7 @@ module.exports = function(grunt) {
           src: [
             'index.html',
             'js/*.js',
+            'favicons/*.*',
             'vendor/bootstrap/dist/css/bootstrap.css',
             'vendor/jquery/dist/jquery.js',
             'vendor/underscore/underscore.js',
