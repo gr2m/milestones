@@ -1,0 +1,15 @@
+.milestones .progress {
+  position: relative;
+  border-radius: 7px;
+  height: 14px;
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid #428bca;
+
+  .progress-bar {
+    &.progress-bar-striped {
+      background-image: linear-gradient(45deg, rgba(255, 255, 255, 1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 75%, transparent 75%, transparent);
+      box-shadow: none;
+    }
+  }
+}
