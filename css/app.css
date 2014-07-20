@@ -92,8 +92,10 @@ body > p.info a {
   border-top: 2px solid #444;
 }
 .milestones table tbody tr.newMilestone th.milestone {
-  background-color: transparent;
   width: 320px;
+}
+.milestones table tbody tr.newMilestone th.milestone:hover small {
+  color: #202020;
 }
 .milestones table tbody tr.newMilestone th.milestone strong:before {
   counter-increment: milestonesubnumber;
@@ -111,8 +113,11 @@ body > p.info a {
 .milestones table tbody tr.newMilestone th.milestone small ul, .milestones table tbody tr.newMilestone th.milestone small ol {
   padding: 0;
 }
-.milestones table tbody tr td.task {
-  height: 1px;
+.milestones table tbody tr td.task:hover {
+  background-color: #F5F5F5;
+}
+.milestones table tbody tr td.task:hover small {
+  color: #202020;
 }
 .milestones table tbody tr td.task strong {
   display: block;
@@ -151,6 +156,29 @@ body > p.info a {
   color: inherit;
 }
 
+@media screen and (max-width: 800px) {
+  th.milestone {
+    width: 240px !important;
+  }
+}
+@media screen and (max-width: 640px) {
+  thead {
+    display: none;
+  }
+
+  tbody tr, tbody th, tbody td, tbody th.milestone {
+    display: block;
+    width: 100% !important;
+  }
+  tbody th.milestone + td {
+    border-top: 1px solid #DDD !important;
+  }
+}
+@media screen and (max-width: 480px) {
+  td.task .pull-right {
+    zoom: .75;
+  }
+}
 @media print {
   body > header,
   body > p.info {
