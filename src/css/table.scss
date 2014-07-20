@@ -14,10 +14,14 @@
           border-top: 2px solid #444;
         }
 
-        th.milestone:before {
-          counter-increment: milestonesubnumber;
-          content: counter(milestonenumber) '. ';
-          display: inline;
+        th.milestone {
+          background-color: transparent;
+
+          &:before {
+            counter-increment: milestonesubnumber;
+            content: counter(milestonenumber) '. ';
+            display: inline;
+          }
         }
       }
 
@@ -30,6 +34,8 @@
 
       img {
         border-radius: 100px;
+      }
+      td img {
         position: relative;
         top: -3px;
         margin: -3px 0;

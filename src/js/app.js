@@ -7,6 +7,11 @@
   rowTemplate += '<tr class="<%= isNewMilestone ? "newMilestone" : "" %>">\n';
   rowTemplate += '    <% if (isNewMilestone) { %>\n';
   rowTemplate += '    <th class="milestone" rowspan="<%= numMilestoneIssues %>">\n';
+  rowTemplate += '        <div class="pull-right">\n';
+  rowTemplate += '          <a href="<%= milestoneAssignee.url %>">\n';
+  rowTemplate += '              <img src="<%= milestoneAssignee.avatar_url %>s=24" alt="<%= milestoneAssignee.login %>">\n';
+  rowTemplate += '          </a>\n';
+  rowTemplate += '        </div>\n';
   rowTemplate += '        <%= milestoneTitle %>\n';
   rowTemplate += '    </th>\n';
   rowTemplate += '    <% } %>\n';
@@ -120,8 +125,10 @@
       return issue;
     });
 
-    // at the end, we add total effort, state, and sort the issues in milestones
+    // at the end, we add total effort, state, owner, description
+    // and sort the issues in milestones
     milestones = milestones.map(function(milestone) {
+      var descriptionParts;
       milestone.effort = milestone.issues.reduce(function(effort, issue) {
         effort.total += issue.effort;
         effort[issue.state] += issue.effort;
@@ -138,6 +145,18 @@
       } else {
         milestone.state = 'closed';
       }
+
+      // milestone.description has a special format with the milestone owner
+      // in the first line:
+      //
+      //     owner: gr2m
+      //
+      //     ---
+      //
+      //     actual description here ...
+      descriptionParts = milestone.description.split(/\s+-{3,}\s+/);
+      milestone.assignee = owners[descriptionParts[0].substr(7)];
+      milestone.description = descriptionParts[1];
 
       milestone.issues.sort(sortByStateAndUpdateAt);
       return milestone;
@@ -180,7 +199,9 @@
         return _.template(rowTemplate, _.extend(issue, {
           isNewMilestone: i === 0,
           numMilestoneIssues: allIssues.length,
-          milestoneTitle: milestone.title.replace(/^\d+\s+/, '')
+          milestoneTitle: milestone.title.replace(/^\d+\s+/, ''),
+          milestoneDescription: milestone.description,
+          milestoneAssignee: milestone.assignee
         }));
       });
       htmlLines = htmlLines.concat(milestoneHtmlLines);
