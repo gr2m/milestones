@@ -27,10 +27,24 @@
       td.task:before {
         content: counter(milestonenumber) '.' counter(milestonesubnumber) ' ';
       }
-    }
 
-    .owner img {
-      border-radius: 100px;
+      img {
+        border-radius: 100px;
+        position: relative;
+        top: -3px;
+        margin: -3px 0;
+      }
+      .progress {
+        display: inline-block;
+        margin: 5px 0 0;
+        height: 14px;
+        position: relative;
+        background: transparent;
+        box-shadow: none;
+        border: 1px solid #428bca;
+        border-radius: 7px;
+        min-width: 14px;
+      }
     }
 
     a {
