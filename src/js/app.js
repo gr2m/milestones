@@ -48,6 +48,14 @@
     'closed': 2
   };
 
+  // issues might be local data which scheme might be outdated
+  // so in case of an error, we clear the local cache
+  window.onerror = function() {
+    try {
+      localStorage.clear();
+    } catch(e) {}
+  };
+
   $.when(
     cache('owners', githubApi.user('gr2m').repo('milestones').collaborators.findAll),
     cache('issues', githubApi.user('gr2m').repo('milestones').issues.findAll)
@@ -263,7 +271,6 @@
 
   function toggleDescriptionInTaskCell (event) {
     var $td = $(event.currentTarget);
-    var issueNumber = $td.data('nr');
     $td.toggleClass('showDescription');
   }
 })(jQuery, initials, _, githubApi);
