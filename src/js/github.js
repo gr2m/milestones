@@ -48,8 +48,19 @@
     repoApi.collaborators = {
       findAll : findRepoCollaborators.bind(null, username, reponame)
     };
+    repoApi.issue = getIssueApi.bind(null, username, reponame);
 
     return repoApi;
+  }
+
+  function getIssueApi(username, reponame, issueNr) {
+    var issueApi = {};
+
+    issueApi.comments = {
+      findAll: findIssueComments.bind(null, username, reponame, issueNr)
+    };
+
+    return issueApi;
   }
 
   function get (path) {
@@ -67,6 +78,10 @@
   }
   function findRepoCollaborators (username, reponame) {
     return get('/repos/'+username+'/'+reponame+'/collaborators');
+  }
+
+  function findIssueComments(username, reponame, issueNr) {
+    return get('/repos/'+username+'/'+reponame+'/issues/' + issueNr + '/comments');
   }
 
   return api;

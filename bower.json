@@ -23,6 +23,7 @@
   "dependencies": {
     "bootstrap": "^3.1.0",
     "underscore": "^1.6.0",
-    "initials": "^0.2.11"
+    "initials": "^0.2.11",
+    "markdown": "~0.5.0"
   }
 }

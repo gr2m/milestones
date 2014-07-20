@@ -16,20 +16,57 @@
 
         th.milestone {
           background-color: transparent;
+          width: 320px;
 
-          &:before {
+          strong:before {
             counter-increment: milestonesubnumber;
             content: counter(milestonenumber) '. ';
             display: inline;
           }
+
+          strong, small {
+            display: block;
+          }
+
+          small {
+            font-weight: normal;
+            padding: 12px 12px 0 18px;
+            color: #ccc;
+
+            ul, ol {
+              padding: 0;
+            }
+          }
         }
       }
 
-      th.milestone:before {
-        display: none;
-      }
-      td.task:before {
-        content: counter(milestonenumber) '.' counter(milestonesubnumber) ' ';
+      td.task {
+        height: 1px;
+
+        strong {
+          display: block;
+          font-weight: normal;
+          &:before {
+            content: counter(milestonenumber) '.' counter(milestonesubnumber) ' ';
+          }
+        }
+        small {
+          display: none;
+          padding: 12px 12px 0 26px;
+          color: #ccc;
+
+          > ul, ol {
+            padding: 0;
+
+            ul, ol {
+              padding-left: 16px;
+            }
+          }
+        }
+
+        &.showDescription small {
+          display: block;
+        }
       }
 
       img {

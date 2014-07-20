@@ -134,7 +134,8 @@ module.exports = function(grunt) {
             'vendor/jquery/dist/jquery.js',
             'vendor/underscore/underscore.js',
             'vendor/bootstrap/dist/js/bootstrap.js',
-            'vendor/initials/initials.js'
+            'vendor/initials/initials.js',
+            'vendor/markdown/lib/markdown.js'
           ],
           dest: 'build/'
         }, {

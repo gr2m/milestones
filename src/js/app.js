@@ -8,16 +8,17 @@
   rowTemplate += '    <% if (isNewMilestone) { %>\n';
   rowTemplate += '    <th class="milestone" rowspan="<%= numMilestoneIssues %>">\n';
   rowTemplate += '        <div class="pull-right">\n';
-  rowTemplate += '          <a href="<%= milestoneAssignee.url %>">\n';
+  rowTemplate += '          <a href="<%= milestoneAssignee.html_url %>">\n';
   rowTemplate += '              <img src="<%= milestoneAssignee.avatar_url %>s=24" alt="<%= milestoneAssignee.login %>">\n';
   rowTemplate += '          </a>\n';
   rowTemplate += '        </div>\n';
-  rowTemplate += '        <%= milestoneTitle %>\n';
+  rowTemplate += '        <strong><%= milestoneTitle %></strong>\n';
+  rowTemplate += '        <small><%= markdown.toHTML(milestoneDescription) %></small>\n';
   rowTemplate += '    </th>\n';
   rowTemplate += '    <% } %>\n';
-  rowTemplate += '    <td class="task">\n';
+  rowTemplate += '    <td class="task" data-nr="<%= number %>">\n';
   rowTemplate += '        <div class="pull-right">\n';
-  rowTemplate += '          <a href="<%= assignee.url %>">\n';
+  rowTemplate += '          <a href="<%= assignee.html_url %>">\n';
   rowTemplate += '              <img src="<%= assignee.avatar_url %>s=24" alt="<%= assignee.login %>">\n';
   rowTemplate += '          </a>\n';
   rowTemplate += '          <div title="<%= state %>" class="progress <%= effort > "5" ? "unratable" : "" %>" style="width: <%= effort * 2 %>0px">\n';
@@ -26,9 +27,10 @@
   rowTemplate += '            <% } %>\n';
   rowTemplate += '          </div>\n';
   rowTemplate += '        </div>\n';
-  rowTemplate += '        <a href="<%= url %>">\n';
+  rowTemplate += '        <strong><a href="<%= html_url %>">\n';
   rowTemplate += '            <%= title %>\n';
-  rowTemplate += '        </a>\n';
+  rowTemplate += '        </a></strong>\n';
+  rowTemplate += '        <small><%= markdown.toHTML(body) %></small>\n';
   rowTemplate += '    </td>\n';
   rowTemplate += '</tr>';
 
@@ -53,6 +55,8 @@
   .progress(handleResponses)
   .done(handleResponses)
   .fail(handleError);
+
+  $(document.body).on('click', 'td.task', toggleDescriptionInTaskCell);
 
   function cache (name, method) {
     var data;
@@ -255,5 +259,11 @@
     if (a.title > b.title) return 1;
     if (a.title < b.title) return -1;
     return 0;
+  }
+
+  function toggleDescriptionInTaskCell (event) {
+    var $td = $(event.currentTarget);
+    var issueNumber = $td.data('nr');
+    $td.toggleClass('showDescription');
   }
 })(jQuery, initials, _, githubApi);
