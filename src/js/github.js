@@ -19,14 +19,38 @@
   var api = {};
 
   api.org = function (name) {
+    var orgApi = {};
 
-
-    return {
-      members: {
-        findAll: findOrgMembers.bind(null, name)
-      }
+    orgApi.members = {
+      findAll: findOrgMembers.bind(null, name)
     };
+    orgApi.repo = getRepoApi.bind(null, name);
+
+    return orgApi;
   };
+
+  api.user = function (name) {
+    var user = {};
+
+    user.repo = getRepoApi.bind(null, name);
+    return user;
+  };
+
+  function getRepoApi(username, reponame) {
+    var repoApi = {};
+
+    repoApi.milestones = {
+      findAll : findRepoMilestones.bind(null, username, reponame)
+    };
+    repoApi.issues = {
+      findAll : findRepoIssues.bind(null, username, reponame)
+    };
+    repoApi.collaborators = {
+      findAll : findRepoCollaborators.bind(null, username, reponame)
+    };
+
+    return repoApi;
+  }
 
   function get (path) {
     return $.get('https://api.github.com' + path);
@@ -34,6 +58,15 @@
 
   function findOrgMembers (orgName) {
     return get('/orgs/'+orgName+'/members');
+  }
+  function findRepoMilestones (username, reponame) {
+    return get('/repos/'+username+'/'+reponame+'/milestones');
+  }
+  function findRepoIssues (username, reponame) {
+    return get('/repos/'+username+'/'+reponame+'/issues?state=all&sort=updated');
+  }
+  function findRepoCollaborators (username, reponame) {
+    return get('/repos/'+username+'/'+reponame+'/collaborators');
   }
 
   return api;

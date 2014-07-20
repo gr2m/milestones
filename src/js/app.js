@@ -1,61 +1,49 @@
-/* global jQuery, initials, _, milestonesApi, githubApi */
+/* global jQuery, initials, _, githubApi */
 
-(function ($, initials, _, milestonesApi) {
+(function ($, initials, _, githubApi) {
   'use strict';
 
   var rowTemplate = '';
-  rowTemplate += '<tr class="<%= milestone ? "newMilestone" : "" %>">\n';
-  rowTemplate += '    <th class="milestone">\n';
-  rowTemplate += '        <%= milestone %>\n';
+  rowTemplate += '<tr class="<%= isNewMilestone ? "newMilestone" : "" %>">\n';
+  rowTemplate += '    <% if (isNewMilestone) { %>\n';
+  rowTemplate += '    <th class="milestone" rowspan="<%= numMilestoneIssues %>">\n';
+  rowTemplate += '        <%= milestoneTitle %>\n';
   rowTemplate += '    </th>\n';
+  rowTemplate += '    <% } %>\n';
   rowTemplate += '    <td class="task">\n';
   rowTemplate += '        <div class="pull-right">\n';
-  rowTemplate += '          <a href="<%= ownerUrl %>">\n';
-  rowTemplate += '              <img src="<%= ownerAvatarUrl %>" alt="<%= ownerName %>">\n';
+  rowTemplate += '          <a href="<%= assignee.url %>">\n';
+  rowTemplate += '              <img src="<%= assignee.avatar_url %>s=24" alt="<%= assignee.login %>">\n';
   rowTemplate += '          </a>\n';
-  rowTemplate += '          <div class="progress" style="width: <%= estimate %>0px">\n';
-  rowTemplate += '            <% if (status !== "Backlog") { %>\n';
-  rowTemplate += '            <div class="progress-bar <%= status === "In Progress" ? "progress-bar-striped active" : "" %>"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">\n';
-  rowTemplate += '            </div>\n';
+  rowTemplate += '          <div title="<%= state %>" class="progress <%= effort > "5" ? "unratable" : "" %>" style="width: <%= effort * 2 %>0px">\n';
+  rowTemplate += '            <% if (state !== "open") { %>\n';
+  rowTemplate += '            <div class="progress-bar <%= state === "active" ? "progress-bar-striped active" : "" %>"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>\n';
   rowTemplate += '            <% } %>\n';
   rowTemplate += '          </div>\n';
   rowTemplate += '        </div>\n';
-  rowTemplate += '        <% if (link) { %>';
-  rowTemplate += '        <a href="<%= link %>">\n';
+  rowTemplate += '        <a href="<%= url %>">\n';
   rowTemplate += '            <%= title %>\n';
   rowTemplate += '        </a>\n';
-  rowTemplate += '        <% } else { %>\n';
-  rowTemplate += '        <%= title %>\n';
-  rowTemplate += '        <small class="badge badge-info">missing issue</small>\n';
-  rowTemplate += '        <% } %>\n';
   rowTemplate += '    </td>\n';
-  // rowTemplate += '    <td class="estimate">\n';
-  // rowTemplate += '        <%= estimate %>\n';
-  // rowTemplate += '    </td>\n';
-  // rowTemplate += '    <td class="status">\n';
-  // rowTemplate += '        <%= status %>\n';
-  // rowTemplate += '    </td>\n';
   rowTemplate += '</tr>';
 
   var progressTemplate = '';
   progressTemplate += '<div class="progress-container" style="width: <%= total %>%; left: <%= preceding %>%;">';
   progressTemplate += '  <div class="progress">';
-  progressTemplate += '    <div class="progress-bar" style="width: <%= donePercent %>%">';
-  progressTemplate += '      <span class="sr-only">done</span>';
-  progressTemplate += '    </div>';
-  progressTemplate += '    <div class="progress-bar progress-bar-striped active" style="width: <%= inProgressPercent %>%">';
-  progressTemplate += '      <span class="sr-only">20% Complete (warning)</span>';
-  progressTemplate += '    </div>';
+  progressTemplate += '    <div class="progress-bar" style="width: <%= closedPercent %>%"></div>';
+  progressTemplate += '    <div class="progress-bar progress-bar-striped active" style="width: <%= activePercent %>%"></div>';
   progressTemplate += '  </div>';
   progressTemplate += '</div>';
 
-  milestonesApi.setup({
-    googleScriptId: 'AKfycbzkbQC8WAEIRDI6KKD0GNJWXVGuvRaBKTv3guT_n-pRCgav1Hev'
-  });
+  var stateMap = {
+    'open': 0,
+    'active': 1,
+    'closed': 2
+  };
 
   $.when(
-    cache('tasks', milestonesApi.findAllTasks),
-    cache('owners', githubApi.org('hoodiehq').members.findAll)
+    cache('owners', githubApi.user('gr2m').repo('milestones').collaborators.findAll),
+    cache('issues', githubApi.user('gr2m').repo('milestones').issues.findAll)
   )
   .progress(handleResponses)
   .done(handleResponses)
@@ -89,55 +77,76 @@
     return defer.promise();
   }
 
-  function handleResponses (tasks, owners) {
-    var currentMilestone;
-    var milestones;
+  function handleResponses (owners, issues) {
+    var milestones = [];
+
+
 
     owners = owners.reduce(function(map, user) {
       map[user.login] = user;
       return map;
     }, {});
 
-    currentMilestone = {};
-    milestones = tasks.reduce(function(milestones, task) {
-      if (currentMilestone.name !== task.milestone) {
-        currentMilestone = {
-          name: task.milestone,
-          effort: {
-            done: 0,
-            inprogress: 0,
-            backlog: 0
-          }
-        };
-        milestones.push(currentMilestone);
+    // milestones are passed as property to every issue. Instead
+    // of sending an extra request to /repos/user/repo/milestones,
+    // we build it out of the returned issues;
+    milestones = issues.reduce(function(currentMilestones, issue) {
+      var milestone = issue.milestone;
+      var currentMilestoneIds;
+      var currentMilestoneIndex;
+
+      // ignore issues without milestones
+      if (! issue.milestone) return;
+
+      currentMilestoneIds = currentMilestones.map(function(milestone) {return milestone.id; });
+      currentMilestoneIndex = currentMilestoneIds.indexOf(milestone.id);
+      delete issue.milestone;
+
+      if (currentMilestoneIndex === -1) {
+        milestone.issues = [issue];
+        currentMilestones.push(milestone);
+      } else {
+        milestone = currentMilestones[currentMilestoneIndex];
+        milestone.issues.push(issue);
       }
-      var status = task.status.toLowerCase().replace(/[^\w]/g, '');
-      var effort = parseInt(task.estimate, 10);
-      currentMilestone.effort[status] += effort;
-      return milestones;
+
+      return currentMilestones;
     }, []);
 
-
-
-    currentMilestone = '';
-    tasks = tasks.map(function(task) {
-      var owner = owners[task.owner];
-      if (currentMilestone === task.milestone) {
-        task.milestone = '';
-      } else {
-        currentMilestone = task.milestone;
-      }
-      task.link = task.issue && task.issue.replace(/([^\/]+)\/([^#]+)#()/, 'https://github.com/$1/$2/issues/$3');
-      task.dependsOn = (task.dependsOn || '').replace(/\n/g, '<br>');
-
-      task.ownerUrl = owner && owner.url;
-      task.ownerAvatarUrl = owner && owner.avatar_url + 's=24';
-      task.ownerName = owner && owner.login;
-      return task;
+    // we set issue effort & state based on issue labels
+    issues = issues.map(function(issue) {
+      issue.state = getIssueState(issue);
+      issue.effort = getIssueEffort(issue);
+      return issue;
     });
 
+    // at the end, we add total effort, state, and sort the issues in milestones
+    milestones = milestones.map(function(milestone) {
+      milestone.effort = milestone.issues.reduce(function(effort, issue) {
+        effort.total += issue.effort;
+        effort[issue.state] += issue.effort;
+        return effort;
+      }, { total: 0, closed: 0, active: 0, open: 0});
+      if (milestone.open_issues > 0) {
+        // either open (not started on any issue)
+        // or active (at least 1 issue closed or active)
+        milestone.state = milestone.issues.reduce(function(state, issue) {
+          if (state === 'closed' || issue.state === 'closed') return 'active';
+          if (state === 'active' || issue.state === 'active') return 'active';
+          return state;
+        }, 'open');
+      } else {
+        milestone.state = 'closed';
+      }
+
+      milestone.issues.sort(sortByStateAndUpdateAt);
+      return milestone;
+    });
+
+    milestones.sort(sortByTitle);
+
     renderChart(milestones);
-    renderTasks(tasks);
+    renderTasks(milestones);
   }
 
 
@@ -146,9 +155,9 @@
     var allTotal;
     var html;
     milestones = milestones.map(function(milestone) {
-      milestone.total = milestone.effort.done + milestone.effort.inprogress + milestone.effort.backlog;
-      milestone.donePercent = parseInt(milestone.effort.done / milestone.total * 100, 10);
-      milestone.inProgressPercent = parseInt(milestone.effort.inprogress / milestone.total * 100, 10);
+      milestone.total = milestone.effort.total;
+      milestone.closedPercent = parseInt(milestone.effort.closed / milestone.total * 100, 10);
+      milestone.activePercent = parseInt(milestone.effort.active / milestone.total * 100, 10);
       return milestone;
     });
     allTotal = milestones.reduce(function(allTotal, milestone) {
@@ -164,13 +173,66 @@
     }).join('\n');
     $('.chart').html(html);
   }
-  function renderTasks(tasks) {
-    var html = tasks.map(_.template.bind(null, rowTemplate)).join('\n');
-    $('tbody').html(html);
+  function renderTasks(milestones) {
+    var htmlLines = [];
+    milestones.forEach(function(milestone) {
+      var milestoneHtmlLines = milestone.issues.map(function(issue, i, allIssues) {
+        return _.template(rowTemplate, _.extend(issue, {
+          isNewMilestone: i === 0,
+          numMilestoneIssues: allIssues.length,
+          milestoneTitle: milestone.title.replace(/^\d+\s+/, '')
+        }));
+      });
+      htmlLines = htmlLines.concat(milestoneHtmlLines);
+    });
+    $('tbody').html(htmlLines.join('\n'));
   }
 
   function handleError (error) {
     // window.alert('an error occured: ' + error);
     window.console.log(error);
   }
-})(jQuery, initials, _, milestonesApi);
+
+  function getIssueState (issue) {
+    var state;
+    var isActive;
+    state = issue.state;
+    isActive = issue.labels.filter(function(label) {
+      return label.name === 'active';
+    }).length === 1;
+    if (isActive) {
+      state = 'active';
+    }
+    return state;
+  }
+
+  function getIssueEffort (issue) {
+    var effort;
+    effort = issue.labels.reduce(function(effort, label) {
+      var currentEffort = parseInt(label.name, 10);
+
+      if (/^5+/.test(label.name)) {
+        currentEffort = 7;
+      }
+      if (typeof currentEffort !== 'number') return effort;
+
+      if (currentEffort > effort) return currentEffort;
+      return effort;
+    }, 0);
+    return effort;
+  }
+
+  function sortByStateAndUpdateAt (a, b) {
+    if (stateMap[a.state] < stateMap[b.state]) return 1;
+    if (stateMap[a.state] > stateMap[b.state]) return -1;
+    if (a.update_at < b.update_at) return 1;
+    if (a.update_at > b.update_at) return -1;
+
+    return 0;
+  }
+  function sortByTitle (a, b) {
+    if (a.title > b.title) return 1;
+    if (a.title < b.title) return -1;
+    return 0;
+  }
+})(jQuery, initials, _, githubApi);
