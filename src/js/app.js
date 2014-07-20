@@ -30,10 +30,15 @@
   rowTemplate += '            <% } %>\n';
   rowTemplate += '          </div>\n';
   rowTemplate += '        </div>\n';
-  rowTemplate += '        <strong><a href="<%= html_url %>">\n';
+  rowTemplate += '        <strong>\n';
   rowTemplate += '            <%= title %>\n';
-  rowTemplate += '        </a></strong>\n';
-  rowTemplate += '        <small><%= markdown.toHTML(body) %></small>\n';
+  rowTemplate += '        </strong>\n';
+  rowTemplate += '        <small>\n';
+  rowTemplate += '          <%= markdown.toHTML(body) %>\n';
+  rowTemplate += '          <a class="btn btn-default btn-xs" href="<%= html_url %>">\n';
+  rowTemplate += '            open issue\n';
+  rowTemplate += '          </a>\n';
+  rowTemplate += '        </small>\n';
   rowTemplate += '    </td>\n';
   rowTemplate += '</tr>';
 
