@@ -1,7 +1,7 @@
 Milestones
 ==========
 
-> A Google GitHub Api backed Milestone thingy
+> A GitHub Api backed Milestone thingy
 
 Local Setup
 -----------
