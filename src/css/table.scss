@@ -15,8 +15,11 @@
         }
 
         th.milestone {
-          background-color: transparent;
           width: 320px;
+
+          &:hover small {
+            color: #202020;
+          }
 
           strong:before {
             counter-increment: milestonesubnumber;
@@ -41,7 +44,13 @@
       }
 
       td.task {
-        height: 1px;
+        &:hover {
+          background-color: #F5F5F5;
+
+          small {
+            color: #202020;
+          }
+        }
 
         strong {
           display: block;
@@ -102,7 +111,6 @@
     tr, th, td, th.milestone {
       display: block;
       width: 100% !important;
-      height: auto !important;
     }
     th.milestone + td {
       border-top: 1px solid #DDD !important;
