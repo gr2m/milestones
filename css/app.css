@@ -176,6 +176,15 @@ body > p.info a {
   tbody th.milestone + td {
     border-top: 1px solid #DDD !important;
   }
+  tbody th.milestone small {
+    display: none !important;
+  }
+  tbody th.milestone.showDescription small {
+    display: block !important;
+  }
+  tbody small {
+    color: #202020 !important;
+  }
 }
 @media screen and (max-width: 480px) {
   td.task .pull-right {
