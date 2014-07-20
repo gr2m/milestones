@@ -56,12 +56,9 @@
     } catch(e) {}
   };
 
-  $.when(
-    cache('owners', githubApi.user('gr2m').repo('milestones').collaborators.findAll),
-    cache('issues', githubApi.user('gr2m').repo('milestones').issues.findAll)
-  )
-  .progress(handleResponses)
-  .done(handleResponses)
+  cache('issues', githubApi.user('gr2m').repo('milestones').issues.findAll)
+  .progress(handleResponse)
+  .done(handleResponse)
   .fail(handleError);
 
   $(document.body).on('click', 'td.task', toggleDescriptionInTaskCell);
@@ -94,15 +91,17 @@
     return defer.promise();
   }
 
-  function handleResponses (owners, issues) {
+  function handleResponse (issues) {
     var milestones = [];
+    var owners = {};
 
-
-
-    owners = owners.reduce(function(map, user) {
-      map[user.login] = user;
-      return map;
-    }, {});
+    // instead of requiring collaborators with a separate request,
+    // we build the ownersMap out of the issues useing the
+    // issue.assignee property
+    issues.forEach(function(issue) {
+      if (! issue.assignee) return;
+      owners[issue.assignee.login] = issue.assignee;
+    });
 
     // milestones are passed as property to every issue. Instead
     // of sending an extra request to /repos/user/repo/milestones,
