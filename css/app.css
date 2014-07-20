@@ -47,14 +47,35 @@ body > p.info a {
   background: white;
 }
 
+.milestones .progress {
+  position: relative;
+  border-radius: 7px;
+  height: 14px;
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid #428bca;
+}
+.milestones .progress .progress-bar.progress-bar-striped {
+  background-image: linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 50%, #ffffff 50%, #ffffff 75%, transparent 75%, transparent);
+  box-shadow: none;
+}
+.milestones .progress.unratable {
+  border-color: #d9534f;
+}
+.milestones .progress.unratable .progress-bar {
+  background-color: #d9534f;
+}
+
 .milestones .chart {
   padding: 0 24px;
   overflow: auto;
   width: 100%;
 }
-.milestones .chart .progress {
+.milestones .chart .progress-container {
   position: relative;
-  margin-bottom: 0;
+}
+.milestones .chart .progress {
+  margin: 2px -4px;
 }
 
 .milestones table thead tr th {
@@ -70,19 +91,61 @@ body > p.info a {
 .milestones table tbody tr.newMilestone th, .milestones table tbody tr.newMilestone td {
   border-top: 2px solid #444;
 }
-.milestones table tbody tr.newMilestone th.milestone:before {
+.milestones table tbody tr.newMilestone th.milestone {
+  background-color: transparent;
+  width: 320px;
+}
+.milestones table tbody tr.newMilestone th.milestone strong:before {
   counter-increment: milestonesubnumber;
   content: counter(milestonenumber) ". ";
   display: inline;
 }
-.milestones table tbody tr th.milestone:before {
-  display: none;
+.milestones table tbody tr.newMilestone th.milestone strong, .milestones table tbody tr.newMilestone th.milestone small {
+  display: block;
 }
-.milestones table tbody tr td.task:before {
+.milestones table tbody tr.newMilestone th.milestone small {
+  font-weight: normal;
+  padding: 12px 12px 0 18px;
+  color: #ccc;
+}
+.milestones table tbody tr.newMilestone th.milestone small ul, .milestones table tbody tr.newMilestone th.milestone small ol {
+  padding: 0;
+}
+.milestones table tbody tr td.task {
+  height: 1px;
+}
+.milestones table tbody tr td.task strong {
+  display: block;
+  font-weight: normal;
+}
+.milestones table tbody tr td.task strong:before {
   content: counter(milestonenumber) "." counter(milestonesubnumber) " ";
 }
-.milestones table tbody .owner img {
+.milestones table tbody tr td.task small {
+  display: none;
+  padding: 12px 12px 0 26px;
+  color: #ccc;
+}
+.milestones table tbody tr td.task small > ul, .milestones table tbody tr td.task small ol {
+  padding: 0;
+}
+.milestones table tbody tr td.task small > ul ul, .milestones table tbody tr td.task small > ul ol, .milestones table tbody tr td.task small ol ul, .milestones table tbody tr td.task small ol ol {
+  padding-left: 16px;
+}
+.milestones table tbody tr td.task.showDescription small {
+  display: block;
+}
+.milestones table tbody tr img {
   border-radius: 100px;
+}
+.milestones table tbody tr td img {
+  position: relative;
+  top: -3px;
+  margin: -3px 0;
+}
+.milestones table tbody tr .progress {
+  display: inline-block;
+  margin: 5px 0 0;
 }
 .milestones table tbody a {
   color: inherit;
