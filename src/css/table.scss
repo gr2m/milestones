@@ -88,3 +88,29 @@
     }
   }
 }
+
+@media screen and (max-width: 800px) {
+  th.milestone {
+    width: 240px !important;
+  }
+}
+@media screen and (max-width: 640px) {
+  thead {
+    display: none;
+  }
+  tbody {
+    tr, th, td, th.milestone {
+      display: block;
+      width: 100% !important;
+      height: auto !important;
+    }
+    th.milestone + td {
+      border-top: 1px solid #DDD !important;
+    }
+  }
+}
+@media screen and (max-width: 480px) {
+  td.task .pull-right {
+    zoom: .75;
+  }
+}
