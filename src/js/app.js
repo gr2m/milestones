@@ -111,6 +111,10 @@
       owners[issue.assignee.login] = issue.assignee;
     });
 
+    issues = issues.filter(function(issue) {
+      return !! issue.milestone;
+    });
+
     // milestones are passed as property to every issue. Instead
     // of sending an extra request to /repos/user/repo/milestones,
     // we build it out of the returned issues;
@@ -118,9 +122,6 @@
       var milestone = issue.milestone;
       var currentMilestoneIds;
       var currentMilestoneIndex;
-
-      // ignore issues without milestones
-      if (! issue.milestone) return;
 
       currentMilestoneIds = currentMilestones.map(function(milestone) {return milestone.id; });
       currentMilestoneIndex = currentMilestoneIds.indexOf(milestone.id);
