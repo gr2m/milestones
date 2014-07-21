@@ -258,7 +258,7 @@
       var currentEffort = parseInt(label.name, 10);
 
       if (/^5\+/.test(label.name)) {
-        UNRATABLE_EFFORT = 7;
+        effort = UNRATABLE_EFFORT;
       }
       if (typeof currentEffort !== 'number') return effort;
 
