@@ -28,7 +28,7 @@
   rowTemplate += '              <img src="<%= assignee.avatar_url %>s=24" alt="<%= assignee.login %>">\n';
   rowTemplate += '          </a>\n';
   rowTemplate += '          <% } %>\n';
-  rowTemplate += '          <div title="<%= effort %>" class="progress <%= effort > 5 ? "unratable" : "" %>" style="width: <%= effort * 2 %>0px">\n';
+  rowTemplate += '          <div title="effort: <%= effort > 5 ? "unratable. Must be split" : effort %>" class="progress <%= effort > 5 ? "unratable" : "" %>" style="width: <%= effort * 2 %>0px">\n';
   rowTemplate += '            <% if (state !== "open") { %>\n';
   rowTemplate += '            <div class="progress-bar <%= state === "active" ? "progress-bar-striped active" : "" %>"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>\n';
   rowTemplate += '            <% } %>\n';
