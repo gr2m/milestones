@@ -100,13 +100,13 @@ body > p.info a {
 .milestones table tbody tr.newMilestone th.milestone:hover small {
   color: #202020;
 }
+.milestones table tbody tr.newMilestone th.milestone strong, .milestones table tbody tr.newMilestone th.milestone small {
+  display: block;
+}
 .milestones table tbody tr.newMilestone th.milestone strong:before {
   counter-increment: milestonesubnumber;
   content: counter(milestonenumber) ". ";
   display: inline;
-}
-.milestones table tbody tr.newMilestone th.milestone strong, .milestones table tbody tr.newMilestone th.milestone small {
-  display: block;
 }
 .milestones table tbody tr.newMilestone th.milestone small {
   font-weight: normal;
@@ -128,6 +128,12 @@ body > p.info a {
 }
 .milestones table tbody tr td.task strong:before {
   content: counter(milestonenumber) "." counter(milestonesubnumber) " ";
+}
+.milestones table tbody tr td.task strong a {
+  color: #ccc;
+}
+.milestones table tbody tr td.task strong a:hover, .milestones table tbody tr td.task strong a:focus {
+  color: inherit;
 }
 .milestones table tbody tr td.task small {
   display: none;
