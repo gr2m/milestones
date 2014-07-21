@@ -67,7 +67,7 @@ body > p.info a {
 }
 
 .milestones .chart {
-  padding: 0 24px;
+  padding: 0 8px 24px;
   overflow: auto;
   width: 100%;
 }
