@@ -23,7 +23,7 @@
   rowTemplate += '    <% } %>\n';
   rowTemplate += '    <td class="task" data-nr="<%= number %>">\n';
   rowTemplate += '        <div class="pull-right">\n';
-  rowTemplate += '          <% if (assignee) { %>\n';
+  rowTemplate += '          <% if (assignee && state === "active") { %>\n';
   rowTemplate += '          <a href="<%= assignee.html_url %>">\n';
   rowTemplate += '              <img src="<%= assignee.avatar_url %>s=24" alt="<%= assignee.login %>">\n';
   rowTemplate += '          </a>\n';
