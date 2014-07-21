@@ -28,11 +28,15 @@
   rowTemplate += '              <img src="<%= assignee.avatar_url %>s=24" alt="<%= assignee.login %>">\n';
   rowTemplate += '          </a>\n';
   rowTemplate += '          <% } %>\n';
-  rowTemplate += '          <div title="effort: <%= effort > 5 ? "unratable. Must be split" : effort %>" class="progress <%= effort > 5 ? "unratable" : "" %>" style="width: <%= effort * 2 %>0px">\n';
+  rowTemplate += '          <% if (effort === undefined) { %>\n';
+  rowTemplate += '          <span class="label label-danger">unrated</span>\n';
+  rowTemplate += '          <% } else {%>\n';
+  rowTemplate += '          <div title="effort: <%= effort %>" class="progress" style="width: <%= effort * 2 %>0px">\n';
   rowTemplate += '            <% if (state !== "open") { %>\n';
   rowTemplate += '            <div class="progress-bar <%= state === "active" ? "progress-bar-striped active" : "" %>"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>\n';
   rowTemplate += '            <% } %>\n';
   rowTemplate += '          </div>\n';
+  rowTemplate += '          <% } %>\n';
   rowTemplate += '        </div>\n';
   rowTemplate += '        <strong>\n';
   rowTemplate += '            <%= title %>\n';
@@ -54,6 +58,7 @@
   progressTemplate += '  <div class="progress">';
   progressTemplate += '    <div class="progress-bar" style="width: <%= closedPercent %>%"></div>';
   progressTemplate += '    <div class="progress-bar progress-bar-striped active" style="width: <%= activePercent %>%"></div>';
+  progressTemplate += '    <div class="progress-bar progress-bar-danger" style="width: <%= unratedPercent %>%"></div>';
   progressTemplate += '  </div>';
   progressTemplate += '</div>';
 
@@ -156,11 +161,16 @@
     // and sort the issues in milestones
     milestones = milestones.map(function(milestone) {
       var descriptionParts;
+      var UNRATED_EFFORT = 7;
       milestone.effort = milestone.issues.reduce(function(effort, issue) {
-        effort.total += issue.effort;
-        effort[issue.state] += issue.effort;
+        effort.total += issue.effort || UNRATED_EFFORT;
+        if (issue.effort === undefined) {
+          effort.unrated += UNRATED_EFFORT;
+        } else {
+          effort[issue.state] += issue.effort;
+        }
         return effort;
-      }, { total: 0, closed: 0, active: 0, open: 0});
+      }, { total: 0, closed: 0, active: 0, open: 0, unrated: 0});
       if (milestone.open_issues > 0) {
         // either open (not started on any issue)
         // or active (at least 1 issue closed or active)
@@ -204,6 +214,7 @@
       milestone.total = milestone.effort.total;
       milestone.closedPercent = parseInt(milestone.effort.closed / milestone.total * 100, 10);
       milestone.activePercent = parseInt(milestone.effort.active / milestone.total * 100, 10);
+      milestone.unratedPercent = parseInt(milestone.effort.unrated / milestone.total * 100, 10);
       return milestone;
     });
     allTotal = milestones.reduce(function(allTotal, milestone) {
@@ -256,20 +267,16 @@
 
   function getIssueEffort (issue) {
     var effort;
-    var UNRATABLE_EFFORT = 7;
     effort = issue.labels.reduce(function(effort, label) {
       var currentEffort = parseInt(label.name, 10);
 
-      if (/^5\+/.test(label.name)) {
-        effort = UNRATABLE_EFFORT;
-      }
       if (typeof currentEffort !== 'number') return effort;
 
       if (currentEffort > effort) return currentEffort;
       return effort;
     }, 0);
-    // if no effort set, return unrateable
-    return effort || UNRATABLE_EFFORT;
+    // if no effort set, return unrated
+    return effort || undefined;
   }
 
   function sortByStateAndUpdateAt (a, b) {
