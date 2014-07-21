@@ -22,14 +22,16 @@
             color: #202020;
           }
 
-          strong:before {
-            counter-increment: milestonesubnumber;
-            content: counter(milestonenumber) '. ';
-            display: inline;
-          }
-
           strong, small {
             display: block;
+          }
+
+          strong {
+            &:before {
+              counter-increment: milestonesubnumber;
+              content: counter(milestonenumber) '. ';
+              display: inline;
+            }
           }
 
           small {
@@ -58,6 +60,14 @@
           font-weight: normal;
           &:before {
             content: counter(milestonenumber) '.' counter(milestonesubnumber) ' ';
+          }
+
+          a {
+            color: #ccc;
+
+            &:hover, &:focus {
+              color: inherit;
+            }
           }
         }
         small {

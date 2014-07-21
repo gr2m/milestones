@@ -36,11 +36,14 @@
   rowTemplate += '        </div>\n';
   rowTemplate += '        <strong>\n';
   rowTemplate += '            <%= title %>\n';
+  rowTemplate += '            <a href="<%= html_url %>">\n';
+  rowTemplate += '              #<%= number %>\n';
+  rowTemplate += '            </a>\n';
   rowTemplate += '        </strong>\n';
   rowTemplate += '        <small>\n';
   rowTemplate += '          <%= markdown.toHTML(body || "") %>\n';
   rowTemplate += '          <a class="btn btn-default btn-xs" href="<%= html_url %>">\n';
-  rowTemplate += '            open issue\n';
+  rowTemplate += '            open on GitHub\n';
   rowTemplate += '          </a>\n';
   rowTemplate += '        </small>\n';
   rowTemplate += '    </td>\n';
