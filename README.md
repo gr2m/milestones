@@ -52,7 +52,6 @@ The app has a few assumptions on milestones, issues & labels of the repo.
 TODOs
 -----
 
-- remove the hardcoded `5+` label check, make it more flexible
 - allow to dynamically pass another github repo url
 - make it work offline
 
