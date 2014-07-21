@@ -249,18 +249,20 @@
 
   function getIssueEffort (issue) {
     var effort;
+    var UNRATABLE_EFFORT = 7;
     effort = issue.labels.reduce(function(effort, label) {
       var currentEffort = parseInt(label.name, 10);
 
       if (/^5\+/.test(label.name)) {
-        currentEffort = 7;
+        UNRATABLE_EFFORT = 7;
       }
       if (typeof currentEffort !== 'number') return effort;
 
       if (currentEffort > effort) return currentEffort;
       return effort;
     }, 0);
-    return effort;
+    // if no effort set, return unrateable
+    return effort || UNRATABLE_EFFORT;
   }
 
   function sortByStateAndUpdateAt (a, b) {
