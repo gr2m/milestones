@@ -110,11 +110,15 @@ body > p.info a {
 }
 .milestones table tbody tr.newMilestone th.milestone small {
   font-weight: normal;
-  padding: 12px 12px 0 18px;
+  padding: 12px 12px 0 16px;
   color: #ccc;
 }
 .milestones table tbody tr.newMilestone th.milestone small ul, .milestones table tbody tr.newMilestone th.milestone small ol {
   padding: 0;
+}
+.milestones table tbody tr.newMilestone th.milestone img {
+  position: relative;
+  top: -3px;
 }
 .milestones table tbody tr td.task:hover {
   background-color: #F5F5F5;
