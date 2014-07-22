@@ -73,8 +73,13 @@
   function findRepoMilestones (username, reponame) {
     return get('/repos/'+username+'/'+reponame+'/milestones');
   }
+  // we use the search API instead of the issues API, as the letter
+  // only returns 30 and needs subsequent requests, while the search
+  // API returns up to 1000 results.
   function findRepoIssues (username, reponame) {
-    return get('/repos/'+username+'/'+reponame+'/issues?state=all&sort=updated');
+    return get('/search/issues?q=repo:'+username+'/'+reponame).then(function(response) {
+      return response.items;
+    });
   }
   function findRepoCollaborators (username, reponame) {
     return get('/repos/'+username+'/'+reponame+'/collaborators');
