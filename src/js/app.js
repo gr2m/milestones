@@ -319,13 +319,29 @@
 
   function toggleDescriptionInTaskCell (event) {
     var $td = $(event.currentTarget);
+    if ($(event.tarket).is('a')) return;
     $td.toggleClass('showDescription');
   }
 
   function markdownToHTML (text) {
     var html = markdown.toHTML(text || '');
+
     html = html.replace(/<li>\[\s+\]/g, '<li class="sub-task"><input type="checkbox" disabled>');
     html = html.replace(/<li>\[x\]/g, '<li class="sub-task"><input type="checkbox" checked disabled>');
+
+
+    html = html.replace(/(https:\/\/github.com\/)?(\w+)\/([^#\/\s\n]+)\/issues\/(\d+)/g, ' $2/$3#$4');
+
+    // make links clickable
+    html = html.replace(/(https?:\/\/[^\s\n<]+)/g, '<a href="$1">$1</a>');
+
+    // turn GitHub links into real links
+    html = html.replace(/ (\w+)\/([^#]+)#(\d+)/g, ' <a href="https://github.com/$1/$2/issues/$3">$1/$2#$3</a>');
+
+
+    // if (html.indexOf('hoodiehq/hoodie.js#311') !== -1) {
+    //   debugger
+    // }
     return html;
   }
 })(jQuery, initials, _, githubApi, markdown);
