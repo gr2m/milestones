@@ -92,6 +92,14 @@
         &.showDescription small {
           display: block;
         }
+
+        .sub-task {
+          list-style: none;
+          input {
+            position: relative;
+            margin: 0 4px 0 -18px;
+          }
+        }
       }
 
       img {

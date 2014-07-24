@@ -1,4 +1,4 @@
-/* global jQuery, initials, _, githubApi */
+/* global jQuery, initials, _, githubApi, markdown */
 
 (function ($, initials, _, githubApi) {
   'use strict';
@@ -18,7 +18,7 @@
   rowTemplate += '        </div>\n';
   rowTemplate += '        <% } %>\n';
   rowTemplate += '        <strong><%= milestoneTitle %></strong>\n';
-  rowTemplate += '        <small><%= markdown.toHTML(milestoneDescription || "") %></small>\n';
+  rowTemplate += '        <small><%= markdownToHTML(milestoneDescription) %></small>\n';
   rowTemplate += '    </th>\n';
   rowTemplate += '    <% } %>\n';
   rowTemplate += '    <td class="task" data-nr="<%= number %>">\n';
@@ -40,12 +40,15 @@
   rowTemplate += '        </div>\n';
   rowTemplate += '        <strong>\n';
   rowTemplate += '            <%= title %>\n';
+  rowTemplate += '            <% if (subtasks) { %>\n';
+  rowTemplate += '            (<%= subtasks.closed %>/<%= subtasks.open + subtasks.closed %>)\n';
+  rowTemplate += '            <% } %>\n';
   rowTemplate += '            <a href="<%= html_url %>">\n';
   rowTemplate += '              #<%= number %>\n';
   rowTemplate += '            </a>\n';
   rowTemplate += '        </strong>\n';
   rowTemplate += '        <small>\n';
-  rowTemplate += '          <%= markdown.toHTML(body || "") %>\n';
+  rowTemplate += '          <%= markdownToHTML(body) %>\n';
   rowTemplate += '          <a class="btn btn-default btn-xs" href="<%= html_url %>">\n';
   rowTemplate += '            open on GitHub\n';
   rowTemplate += '          </a>\n';
@@ -151,9 +154,11 @@
     }, []);
 
     // we set issue effort & state based on issue labels
+    // we set subtasks based on the issue body
     issues = issues.map(function(issue) {
       issue.state = getIssueState(issue);
       issue.effort = getIssueEffort(issue);
+      issue.subtasks = getIssuesSubTasks(issue);
       return issue;
     });
 
@@ -239,7 +244,8 @@
           numMilestoneIssues: allIssues.length,
           milestoneTitle: milestone.title.replace(/^\d+\s+/, ''),
           milestoneDescription: milestone.description,
-          milestoneAssignee: milestone.assignee
+          milestoneAssignee: milestone.assignee,
+          markdownToHTML: markdownToHTML
         }));
       });
       htmlLines = htmlLines.concat(milestoneHtmlLines);
@@ -279,6 +285,24 @@
     return effort || undefined;
   }
 
+  function getIssuesSubTasks (issue) {
+    var numSubTasksOpen;
+    var numSubTasksClosed;
+    var total;
+    var text = issue.body || '';
+
+    numSubTasksOpen = (text.match(/(^|\n)- \[\s+\]/g) || []).length;
+    numSubTasksClosed = (text.match(/(^|\n)- \[x]/g) || []).length;
+
+    total = numSubTasksOpen + numSubTasksClosed;
+    if (numSubTasksClosed === total) return;
+
+    return {
+      open: numSubTasksOpen,
+      closed: numSubTasksClosed
+    };
+  }
+
   function sortByStateAndUpdateAt (a, b) {
     if (stateMap[a.state] < stateMap[b.state]) return 1;
     if (stateMap[a.state] > stateMap[b.state]) return -1;
@@ -297,4 +321,11 @@
     var $td = $(event.currentTarget);
     $td.toggleClass('showDescription');
   }
-})(jQuery, initials, _, githubApi);
+
+  function markdownToHTML (text) {
+    var html = markdown.toHTML(text || '');
+    html = html.replace(/<li>\[\s+\]/g, '<li class="sub-task"><input type="checkbox" disabled>');
+    html = html.replace(/<li>\[x\]/g, '<li class="sub-task"><input type="checkbox" checked disabled>');
+    return html;
+  }
+})(jQuery, initials, _, githubApi, markdown);
