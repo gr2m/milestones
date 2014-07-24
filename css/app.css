@@ -153,6 +153,13 @@ body > p.info a {
 .milestones table tbody tr td.task.showDescription small {
   display: block;
 }
+.milestones table tbody tr td.task .sub-task {
+  list-style: none;
+}
+.milestones table tbody tr td.task .sub-task input {
+  position: relative;
+  margin: 0 4px 0 -18px;
+}
 .milestones table tbody tr img {
   border-radius: 100px;
 }
