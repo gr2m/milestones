@@ -198,6 +198,7 @@
       //
       //     actual description here ...
       descriptionParts = milestone.description.split(/\s+-{3,}\s+/);
+      milestone.nr = parseInt(milestone.title);
       milestone.title = milestone.title.replace(/^\d+\s+/, '');
       milestone.assignee = owners[descriptionParts[0].substr(7)];
       milestone.description = descriptionParts[1];
@@ -206,7 +207,7 @@
       return milestone;
     });
 
-    milestones.sort(sortByTitle);
+    milestones.sort(sortByNr);
 
     renderChart(milestones);
     renderTasks(milestones);
@@ -313,9 +314,9 @@
 
     return 0;
   }
-  function sortByTitle (a, b) {
-    if (a.title > b.title) return 1;
-    if (a.title < b.title) return -1;
+  function sortByNr (a, b) {
+    if (a.nr > b.nr) return 1;
+    if (a.nr < b.nr) return -1;
     return 0;
   }
 
