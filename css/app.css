@@ -6827,11 +6827,19 @@ body > p.info a {
   position: relative;
   top: -3px;
 }
+.milestones table tbody tr td.task {
+  cursor: pointer;
+}
 .milestones table tbody tr td.task:hover {
   background-color: #F5F5F5;
 }
 .milestones table tbody tr td.task:hover small {
   color: #202020;
+}
+.milestones table tbody tr td.task h1, .milestones table tbody tr td.task h2, .milestones table tbody tr td.task h3, .milestones table tbody tr td.task h4, .milestones table tbody tr td.task h5, .milestones table tbody tr td.task h6 {
+  font-size: inherit;
+  font-weight: bold;
+  margin: 0 0 10px;
 }
 .milestones table tbody tr td.task strong {
   display: block;
@@ -6889,6 +6897,10 @@ body > p.info a {
   }
 }
 @media screen and (max-width: 640px) {
+  .milestones table {
+    margin: -1px 0 0;
+  }
+
   thead {
     display: none;
   }
