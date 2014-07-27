@@ -53,6 +53,7 @@
       }
 
       td.task {
+        cursor: pointer;
         &:hover {
           background-color: #F5F5F5;
 
@@ -61,6 +62,11 @@
           }
         }
 
+        h1, h2, h3, h4, h5, h6 {
+          font-size: inherit;
+          font-weight: bold;
+          margin: 0 0 10px;
+        }
         strong {
           display: block;
           font-weight: normal;
@@ -129,6 +135,9 @@
   }
 }
 @media screen and (max-width: 640px) {
+  .milestones table {
+    margin: -1px 0 0;
+  }
   thead {
     display: none;
   }

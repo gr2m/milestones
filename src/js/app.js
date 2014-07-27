@@ -85,7 +85,7 @@
   .done(handleResponse)
   .fail(handleError);
 
-  $(document.body).on('click touchstart', 'th.milestone, td.task', toggleDescriptionInTaskCell);
+  $(document.body).on('click', 'th.milestone, td.task', toggleDescriptionInTaskCell);
 
   function cache (name, method) {
     var data;
