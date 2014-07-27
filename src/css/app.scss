@@ -1,3 +1,10 @@
+$brand-primary:         #282726; // #312783;
+$brand-success:         #0B8E36;
+$brand-info:            #693C10;
+$brand-warning:         #E94E1B;
+$brand-danger:          #BE1522;
+
+@import '../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap';
 @import './page';
 @import './progress_bar';
 @import './chart';

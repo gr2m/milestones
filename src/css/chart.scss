@@ -1,14 +1,36 @@
 .milestones .chart {
-  padding: 0 8px 24px;
+  padding: 18px;
   overflow: auto;
   width: 100%;
+  background: #f3f3f3;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 
   .progress-container {
     position: relative;
+
+    .label {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      padding: 0 8px;
+      font-size: 10px;
+      line-height: 14px;
+      color: #aaa;
+      font-weight: normal;
+    }
+
+    &.over50percent {
+      .label {
+        left: auto;
+        right: 100%;
+      }
+    }
   }
 
   .progress {
     margin: 2px -4px;
+    background-color: #fff;
     // overflow: visible;
     // .progress-bar-danger {
     //   position: relative;

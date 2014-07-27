@@ -57,12 +57,13 @@
   rowTemplate += '</tr>';
 
   var progressTemplate = '';
-  progressTemplate += '<div class="progress-container" style="width: <%= total %>%; left: <%= preceding %>%;">';
+  progressTemplate += '<div class="progress-container <% if (preceding > 50) { %>over50percent<% } %>" style="width: <%= total %>%; left: <%= preceding %>%;">';
   progressTemplate += '  <div class="progress">';
   progressTemplate += '    <div class="progress-bar" style="width: <%= closedPercent %>%"></div>';
   progressTemplate += '    <div class="progress-bar progress-bar-striped active" style="width: <%= activePercent %>%"></div>';
   progressTemplate += '    <div class="progress-bar progress-bar-danger" style="width: <%= unratedPercent %>%"></div>';
   progressTemplate += '  </div>';
+  progressTemplate += '  <div class="label"><%= title %></div>';
   progressTemplate += '</div>';
 
   var stateMap = {
@@ -197,6 +198,7 @@
       //
       //     actual description here ...
       descriptionParts = milestone.description.split(/\s+-{3,}\s+/);
+      milestone.title = milestone.title.replace(/^\d+\s+/, '');
       milestone.assignee = owners[descriptionParts[0].substr(7)];
       milestone.description = descriptionParts[1];
 
@@ -242,7 +244,7 @@
         return _.template(rowTemplate, _.extend(issue, {
           isNewMilestone: i === 0,
           numMilestoneIssues: allIssues.length,
-          milestoneTitle: milestone.title.replace(/^\d+\s+/, ''),
+          milestoneTitle: milestone.title,
           milestoneDescription: milestone.description,
           milestoneAssignee: milestone.assignee,
           markdownToHTML: markdownToHTML

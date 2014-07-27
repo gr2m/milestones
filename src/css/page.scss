@@ -3,28 +3,24 @@ html, body {
 }
 body {
   font-family: Helvetica, Arial;
+  line-height: 1.42857;
+  color: #282726;
 }
 body > header {
-  padding: 18px 18px 24px;
-  background: #222;
-  color: #fff;
-
-  /* hoodie hoodie hoodie! */
-  background-image: linear-gradient(90deg, #2C2A86 20.5%, #078D2D 20.5%, #078D2D 37.5%, #FCB20D 37.5%, #FCB20D 55.5%, #EC5100 55.5%, #EC5100 72.5%, #6A3C06 72.5%, #6A3C06 79.5%, #C01C1B 79.5%);
-  background-size: 300px 6px;
-  background-repeat: repeat-x;
-  background-position: 0 100%;
+  padding: 18px;
+  background-color: #fff;
 }
 body > header a {
   color: #fff !important;
 }
 body > header h1 {
   margin: 0;
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 36px;
+  font-weight: normal;
 }
 body > header h6 {
   margin: 0;
+  color: #ccc;
 }
 body > p.info {
   padding: 32px 8px 0;
@@ -36,7 +32,5 @@ body > p.info a {
   text-decoration: underline;
 }
 .content {
-  padding: 24px 0;
-
   background: #FFF
 }
