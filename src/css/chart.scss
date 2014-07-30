@@ -6,37 +6,106 @@
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 
-  .progress-container {
+  .progress-group {
     position: relative;
+    float: left;
+    height: 100%;
+  }
 
-    .label {
+  .progress {
+    margin: 0 -4px;
+    background-color: #fff;
+  }
+
+  .milestone-label {
+    position: relative;
+    font-size: 12px;
+    line-height: 14px;
+    color: $brand-primary;
+    font-weight: bold;
+
+    &:before {
+      content: '';
+      display: block;
       position: absolute;
       top: 0;
-      left: 100%;
-      padding: 0 8px;
-      font-size: 10px;
-      line-height: 14px;
-      color: #aaa;
-      font-weight: normal;
+      bottom: 0;
+      width: 2px;
+      background: #F3F3F3;
+    }
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 14px;
+      width: 1px;
+      background: $brand-primary;
     }
 
-    &.over50percent {
-      .label {
-        left: auto;
-        right: 100%;
+    span {
+      position: relative;
+      display: block;
+      padding: 0 2px;
+    }
+  }
+
+  .top-labels {
+    position: relative;
+    z-index: 2;
+    margin: 0 -4px;
+    padding-bottom: 6px;
+    .milestone-label {
+      padding-bottom: 20px;
+      margin-bottom: -20px;
+      border-left: 1px solid $brand-primary;
+      left: -1px;
+
+      &:before {
+        left: 0;
+      }
+      &:after {
+        left: 2px;
+        bottom: 0px;
+      }
+
+      span {
+        padding-bottom: 6px;
+        top: -2px;
+      }
+    }
+  }
+  .bottom-labels {
+    position: relative;
+    z-index: 2;
+    margin: 0 -4px;
+    padding-top: 6px;
+    .milestone-label {
+      border-right: 1px solid $brand-primary;
+      text-align: right;
+      padding-top: 20px;
+      margin-top: -20px;
+
+      &:before {
+        right: -3px;
+      }
+
+      &:after {
+        right: -4px;
+        top: 0px;
+      }
+
+      &:last-child:after {
+        display: none;
+      }
+
+      span {
+        top: 3px;
+        padding-top: 6px;
       }
     }
   }
 
-  .progress {
-    margin: 2px -4px;
-    background-color: #fff;
-    // overflow: visible;
-    // .progress-bar-danger {
-    //   position: relative;
-    //   padding: 1px 0;
-    //   margin: -1px 0;
-    //   left: 1px;
-    // }
+  .summary {
+    padding-top: 18px;
   }
 }

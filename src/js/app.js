@@ -57,13 +57,12 @@
   rowTemplate += '</tr>';
 
   var progressTemplate = '';
-  progressTemplate += '<div class="progress-container <% if (preceding > 50) { %>over50percent<% } %>" style="width: <%= total %>%; left: <%= preceding %>%;">';
-  progressTemplate += '  <div class="progress">';
-  progressTemplate += '    <div class="progress-bar" style="width: <%= closedPercent %>%"></div>';
-  progressTemplate += '    <div class="progress-bar progress-bar-striped active" style="width: <%= activePercent %>%"></div>';
-  progressTemplate += '    <div class="progress-bar progress-bar-danger" style="width: <%= unratedPercent %>%"></div>';
-  progressTemplate += '  </div>';
-  progressTemplate += '  <div class="label"><%= title %></div>';
+  progressTemplate += '<div title="<%= total %>" class="progress-group <% if (preceding > 50) { %>over50percent<% } %>" style="width: <%= total %>%;">';
+  progressTemplate += '  <div class="progress-bar" style="width: <%= closedPercent %>%"></div>';
+  progressTemplate += '  <div class="progress-bar progress-bar-striped active" style="width: <%= activePercent %>%"></div>';
+  progressTemplate += '  <div class="progress-bar progress-bar-danger" style="width: <%= unratedPercent %>%"></div>';
+  progressTemplate += '  <div class="progress-bar invisible" style="width: <%= openPercent %>%;"></div>';
+  progressTemplate += '  <div class="progress-group-label"><%= title %></div>';
   progressTemplate += '</div>';
 
   var stateMap = {
@@ -223,6 +222,7 @@
       milestone.closedPercent = parseInt(milestone.effort.closed / milestone.total * 100, 10);
       milestone.activePercent = parseInt(milestone.effort.active / milestone.total * 100, 10);
       milestone.unratedPercent = parseInt(milestone.effort.unrated / milestone.total * 100, 10);
+      milestone.openPercent = parseInt(milestone.effort.open / milestone.total * 100, 10);
       return milestone;
     });
     allTotal = milestones.reduce(function(allTotal, milestone) {
@@ -236,7 +236,90 @@
         preceding: currentTotal - milestone.total
       }));
     }).join('\n');
+
+
+    html = '<div class="progress">' + html + '</div>';
     $('.chart').html(html);
+
+
+    var topLabelsHtml = '';
+    var bottomLabelsHtml = '';
+    var milestonesWithTopLabels = [];
+    var milestonesWithBottomLabels = [];
+
+    currentTotal = 0;
+    milestones.forEach(function(milestone) {
+      currentTotal += milestone.total;
+      if (currentTotal > 50) {
+        milestonesWithBottomLabels.push(milestone);
+      } else {
+        milestonesWithTopLabels.push(milestone);
+      }
+    });
+
+    currentTotal = 0;
+    milestonesWithTopLabels.forEach(function(milestone) {
+      topLabelsHtml += '<div class="milestone-label" style="margin-left: '+(milestone.total / (100 - currentTotal) * 100)+'%;">';
+      topLabelsHtml += '<span>';
+      topLabelsHtml += milestone.title;
+      topLabelsHtml += '</span>';
+
+      currentTotal+= milestone.total;
+    });
+    milestonesWithTopLabels.forEach(function() {
+      topLabelsHtml += '</div>';
+    });
+
+    // milestonesWithBottomLabels.reverse();
+    currentTotal = 0;
+    milestonesWithBottomLabels.reverse();
+    milestonesWithBottomLabels.forEach(function(milestone, i) {
+      var prevTotal = i > 0 ? milestonesWithBottomLabels[i-1].total : 0;
+
+      bottomLabelsHtml += '<div class="milestone-label" style="margin-right: '+((prevTotal) / (100 - currentTotal + prevTotal) * 100)+'%;">';
+      currentTotal+= milestone.total;
+    });
+
+    milestonesWithBottomLabels.reverse().forEach(function(milestone) {
+      bottomLabelsHtml += '<span>';
+      bottomLabelsHtml += milestone.title;
+      bottomLabelsHtml += '</span>';
+      bottomLabelsHtml += '</div>';
+    });
+
+    $('.chart').prepend('<div class="top-labels">' + topLabelsHtml + '</div>');
+    $('.chart').append('<div class="bottom-labels">' + bottomLabelsHtml + '</div>');
+
+    // total summary
+    var summaryHtml = '';
+    var totalEfforts = milestones.reduce(function(summary, milestone) {
+      summary.closed += milestone.effort.closed;
+      summary.active += milestone.effort.active;
+      summary.unrated += milestone.effort.unrated;
+      summary.open += milestone.effort.open;
+      summary.total += milestone.effort.total;
+      summary.issues += milestone.issues.length;
+      return summary;
+    }, {
+      closed: 0,
+      active: 0,
+      unrated: 0,
+      open: 0,
+      total: 0,
+      issues: 0
+    });
+    totalEfforts.milestones = milestones.length;
+
+    summaryHtml += '<div class="summary">\n';
+    summaryHtml += '  <strong>'+totalEfforts.milestones+'</strong> milestones,\n';
+    summaryHtml += '  <strong>'+totalEfforts.issues+'</strong> tasks,\n';
+    summaryHtml += '  <strong>'+totalEfforts.total+'</strong> total effort.<br>\n';
+    summaryHtml += '  <strong>'+(parseInt(totalEfforts.closed/totalEfforts.total * 100, 10))+'%</strong> done,\n';
+    summaryHtml += '  <strong>'+(parseInt(totalEfforts.active/totalEfforts.total * 100, 10))+'%</strong> active,\n';
+    summaryHtml += '  <strong>'+(parseInt(totalEfforts.open/totalEfforts.total * 100, 10))+'%</strong> open.\n';
+    summaryHtml += '  <strong>'+totalEfforts.unrated / 7+'</strong> unrated tasks.\n';
+    summaryHtml += '</div>\n';
+    $('.chart').append(summaryHtml);
   }
   function renderTasks(milestones) {
     var htmlLines = [];
