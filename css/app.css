@@ -6762,26 +6762,95 @@ body > p.info a {
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 }
-.milestones .chart .progress-container {
+.milestones .chart .progress-group {
   position: relative;
-}
-.milestones .chart .progress-container .label {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  padding: 0 8px;
-  font-size: 10px;
-  line-height: 14px;
-  color: #aaa;
-  font-weight: normal;
-}
-.milestones .chart .progress-container.over50percent .label {
-  left: auto;
-  right: 100%;
+  float: left;
+  height: 100%;
 }
 .milestones .chart .progress {
-  margin: 2px -4px;
+  margin: 0 -4px;
   background-color: #fff;
+}
+.milestones .chart .milestone-label {
+  position: relative;
+  font-size: 12px;
+  line-height: 14px;
+  color: #282726;
+  font-weight: bold;
+}
+.milestones .chart .milestone-label:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #F3F3F3;
+}
+.milestones .chart .milestone-label:after {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 14px;
+  width: 1px;
+  background: #282726;
+}
+.milestones .chart .milestone-label span {
+  position: relative;
+  display: block;
+  padding: 0 2px;
+}
+.milestones .chart .top-labels {
+  position: relative;
+  z-index: 2;
+  margin: 0 -4px;
+  padding-bottom: 6px;
+}
+.milestones .chart .top-labels .milestone-label {
+  padding-bottom: 20px;
+  margin-bottom: -20px;
+  border-left: 1px solid #282726;
+  left: -1px;
+}
+.milestones .chart .top-labels .milestone-label:before {
+  left: 0;
+}
+.milestones .chart .top-labels .milestone-label:after {
+  left: 2px;
+  bottom: 0px;
+}
+.milestones .chart .top-labels .milestone-label span {
+  padding-bottom: 6px;
+  top: -2px;
+}
+.milestones .chart .bottom-labels {
+  position: relative;
+  z-index: 2;
+  margin: 0 -4px;
+  padding-top: 6px;
+}
+.milestones .chart .bottom-labels .milestone-label {
+  border-right: 1px solid #282726;
+  text-align: right;
+  padding-top: 20px;
+  margin-top: -20px;
+}
+.milestones .chart .bottom-labels .milestone-label:before {
+  right: -3px;
+}
+.milestones .chart .bottom-labels .milestone-label:after {
+  right: -4px;
+  top: 0px;
+}
+.milestones .chart .bottom-labels .milestone-label:last-child:after {
+  display: none;
+}
+.milestones .chart .bottom-labels .milestone-label span {
+  top: 3px;
+  padding-top: 6px;
+}
+.milestones .chart .summary {
+  padding-top: 18px;
 }
 
 .milestones table {
