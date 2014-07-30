@@ -13,7 +13,7 @@
   rowTemplate += '        <% if (milestoneAssignee) { %>\n';
   rowTemplate += '        <div class="pull-right">\n';
   rowTemplate += '          <a href="<%= milestoneAssignee.html_url %>">\n';
-  rowTemplate += '              <img src="<%= milestoneAssignee.avatar_url %>s=24" alt="<%= milestoneAssignee.login %>">\n';
+  rowTemplate += '              <img src="<%= milestoneAssignee.avatar_url %>&s=24" alt="<%= milestoneAssignee.login %>">\n';
   rowTemplate += '          </a>\n';
   rowTemplate += '        </div>\n';
   rowTemplate += '        <% } %>\n';
@@ -25,7 +25,7 @@
   rowTemplate += '        <div class="pull-right">\n';
   rowTemplate += '          <% if (assignee && state === "active") { %>\n';
   rowTemplate += '          <a href="<%= assignee.html_url %>">\n';
-  rowTemplate += '              <img src="<%= assignee.avatar_url %>s=24" alt="<%= assignee.login %>">\n';
+  rowTemplate += '              <img src="<%= assignee.avatar_url %>&s=24" alt="<%= assignee.login %>">\n';
   rowTemplate += '          </a>\n';
   rowTemplate += '          <% } %>\n';
   rowTemplate += '          <% if (effort === undefined) { %>\n';
