@@ -378,7 +378,7 @@
     var text = issue.body || '';
 
     numSubTasksOpen = (text.match(/(^|\n)- \[\s+\]/g) || []).length;
-    numSubTasksClosed = (text.match(/(^|\n)- \[x]/g) || []).length;
+    numSubTasksClosed = (text.match(/(^|\n)- \[x]/gi) || []).length;
 
     total = numSubTasksOpen + numSubTasksClosed;
     if (numSubTasksClosed === total) return;
@@ -413,7 +413,7 @@
     var html = markdown.toHTML(text || '');
 
     html = html.replace(/<li>\[\s+\]/g, '<li class="sub-task"><input type="checkbox" disabled>');
-    html = html.replace(/<li>\[x\]/g, '<li class="sub-task"><input type="checkbox" checked disabled>');
+    html = html.replace(/<li>\[x\]/gi, '<li class="sub-task"><input type="checkbox" checked disabled>');
 
 
     html = html.replace(/(https:\/\/github.com\/)?(\w+)\/([^#\/\s\n]+)\/issues\/(\d+)/g, ' $2/$3#$4');
