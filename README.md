@@ -59,6 +59,6 @@ Fine Print
 ----------
 
 Milestones have been authored by [Gregor Martynus](https://github.com/gr2m),
-proud member of [Team Hoodie](http://hood.ie/). Support our work: [gittip us](https://www.gittip.com/hoodiehq/).
+proud member of the [Hoodie Community](http://hood.ie/).
 
 License: MIT
