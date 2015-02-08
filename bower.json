@@ -21,9 +21,9 @@
     "src"
   ],
   "dependencies": {
-    "underscore": "^1.6.0",
-    "initials": "^0.2.11",
-    "markdown": "~0.5.0",
-    "bootstrap-sass-official": "~3.2.0"
+    "underscore": "1.6.0",
+    "initials": "1.0.0",
+    "markdown": "0.5.0",
+    "bootstrap-sass-official": "3.2.0"
   }
 }
