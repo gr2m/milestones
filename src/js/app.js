@@ -153,6 +153,10 @@
       return currentMilestones;
     }, []);
 
+    milestones = milestones.filter(function (milestone) {
+      return milestone.state !== 'closed';
+    });
+
     // we set issue effort & state based on issue labels
     // we set subtasks based on the issue body
     issues = issues.map(function(issue) {
