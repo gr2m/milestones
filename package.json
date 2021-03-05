@@ -5,10 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/gr2m/milestones.git"
-  },
+  "repository": "github:gr2m/milestones",
   "keywords": [
     "bootstrap",
     "app",
@@ -17,10 +14,6 @@
   ],
   "author": "Gregor Martynus <gregor@martynus.net>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/gr2m/milestones/issues"
-  },
-  "homepage": "https://github.com/gr2m/milestones",
   "devDependencies": {
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-sass": "~0.7.2",
